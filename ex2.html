@@ -11,30 +11,31 @@
 
 /* タブメニュー */
 .tab-header-wrapper {
-  margin: 0;
-  padding: 0;
   display: flex;
-  flex-direction: row;
+  flex-wrap: wrap;
 }
 .tab-header {
-  list-style-type: none;
   margin-right: 8px;
-}
-.tab-header a {
+  display: flex; /* タブの高さを揃え、かつタブ内の文字のベースラインを揃えるために必要 */
+  align-items: flex-end; /* タブの高さを揃え、かつタブ内の文字のベースラインを揃えるために必要 */
   background-color: darkgray;
   border: 2px solid #555;
   border-bottom: 0;
   border-radius: 4px 4px 0 0;
+  box-sizing: border-box;
   color: white;
-  display: block;
   padding: 8px;
+  position: relative; /* z-index とともに必要 */
   text-decoration: none;
+  z-index: 0;
 }
-.tab-header-active a {
+.tab-header-active {
   background-color: lightblue;
   color: inherit;
-  position: relative; /* z-index とともに必要 */
   z-index: 1;
+}
+.tab-header-text { /* タブの高さを揃え、かつタブ内の文字のベースラインを揃えるために必要 */
+  display: block;
 }
 
 /* タブ本文 */
@@ -60,27 +61,27 @@
   タブをホバーすることで内容が切り替わり、タブをクリックすることでページ移動します。
 </p>
 <div class="tab-container">
-  <ul class="tab-header-wrapper">
-    <li class="tab-header tab-header-active">
-      <a href="https://ja.wikipedia.org/wiki/%E3%81%82%E3%81%AB%E3%82%83%E3%81%BE%E3%82%8B%E6%8E%A2%E5%81%B5_%E3%82%AD%E3%83%AB%E3%83%9F%E3%83%B3%E3%81%9A%E3%81%85" target="_blank">Wikipedia</a>
-    </li>
-    <li class="tab-header">
-      <a href="http://dic.nicovideo.jp/a/%E3%81%82%E3%81%AB%E3%82%83%E3%81%BE%E3%82%8B%E6%8E%A2%E5%81%B5%20%E3%82%AD%E3%83%AB%E3%83%9F%E3%83%B3%E3%81%9A%E3%81%85" target="_blank">ニコニコ大百科</a>
-    </li>
-    <li class="tab-header">
-      <a href="http://www.b-ch.com/ttl/index.php?ttl_c=2707" target="_blank">バンダイチャンネル</a>
-    </li>
-  </ul>
+  <div class="tab-header-wrapper">
+    <a class="tab-header tab-header-active" data-target="#wikipedia" href="https://ja.wikipedia.org/wiki/%E3%81%82%E3%81%AB%E3%82%83%E3%81%BE%E3%82%8B%E6%8E%A2%E5%81%B5_%E3%82%AD%E3%83%AB%E3%83%9F%E3%83%B3%E3%81%9A%E3%81%85" target="_balnk">
+      <span class="tab-header-text">Wikipedia</span>
+    </a>
+    <a class="tab-header" data-target="#niconico" href="http://dic.nicovideo.jp/a/%E3%81%82%E3%81%AB%E3%82%83%E3%81%BE%E3%82%8B%E6%8E%A2%E5%81%B5%20%E3%82%AD%E3%83%AB%E3%83%9F%E3%83%B3%E3%81%9A%E3%81%85" target="_balnk">
+      <span class="tab-header-text">ニコニコ大百科</span>
+    </a>
+    <a class="tab-header" data-target="#bandai" href="http://www.b-ch.com/ttl/index.php?ttl_c=2707" target="_balnk">
+      <span class="tab-header-text">バンダイチャンネル</span>
+    </a>
+  </div>
   <div class="tab-body-wrapper">
-    <div class="tab-body tab-body-active">
+    <div id="wikipedia" class="tab-body tab-body-active">
       Wikipediaのページへ移動します。<br>
       https://ja.wikipedia.org/wiki/あにゃまる探偵_キルミンずぅ
     </div>
-    <div class="tab-body">
+    <div id="niconico" class="tab-body">
       ニコニコ大百科のページへ移動します。<br>
       http://dic.nicovideo.jp/a/あにゃまる探偵%20キルミンずぅ
     </div>
-    <div class="tab-body">
+    <div id="bandai" class="tab-body">
       バンダイチャンネルのページへ移動します。<br>
       第1話を無料で視聴できます。<br>
       http://www.b-ch.com/ttl/index.php?ttl_c=2707
@@ -95,12 +96,10 @@
 <script>
 // タブがマウスオーバーされた場合の動作
 $('.tab-header').mouseover(function() {
-  // クリックされたタブを元に、表示短縮用の変数を作成
   var container     = $(this).parents('.tab-container');
   var currentHeader = $(container).find('.tab-header-active');
-  var nextIndex     = $(container).find('.tab-header').index(this);
   var currentBody   = $(container).find('.tab-body-active');
-  var nextBody      = $(container).find('.tab-body').eq(nextIndex);
+  var nextBody      = $($(this).data('target'));
 
   // クリックされたタブと表示中のタブが違っている場合のみ、下記を行う
   if (!$(this).is(currentHeader)) {
