@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>jQuery UI: ホバーでタブを切り替える</title>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<style type="text/css">
+/* jQueryUI のデフォルトの指定を上書き */
+.ui-tabs .ui-tabs-nav li.ui-tabs-active .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-state-disabled .ui-tabs-anchor,
+.ui-tabs .ui-tabs-nav li.ui-tabs-loading .ui-tabs-anchor {
+  cursor: pointer;
+}
+</style>
+</head>
+<body>
+<h1>jQuery UI: ホバーでタブを切り替える</h1>
+<p>
+  <a href="http://jqueryui.com/tabs/#mouseover">jQuery UIのTabs</a>を利用して、ホバーでタブを切り替えて、クリックでページ移動します。
+</p>
+<div class="tab-container">
+  <ul>
+    <li>
+      <a href="#tab1" data-url="https://ja.wikipedia.org/wiki/%E3%81%82%E3%81%AB%E3%82%83%E3%81%BE%E3%82%8B%E6%8E%A2%E5%81%B5_%E3%82%AD%E3%83%AB%E3%83%9F%E3%83%B3%E3%81%9A%E3%81%85">Wikipedia</a>
+    </li>
+    <li>
+      <a href="#tab2" data-url="http://dic.nicovideo.jp/a/%E3%81%82%E3%81%AB%E3%82%83%E3%81%BE%E3%82%8B%E6%8E%A2%E5%81%B5%20%E3%82%AD%E3%83%AB%E3%83%9F%E3%83%B3%E3%81%9A%E3%81%85">ニコニコ大百科</a>
+    </li>
+    <li>
+      <a href="#tab3" data-url="http://www.b-ch.com/ttl/index.php?ttl_c=2707">バンダイチャンネル</a>
+    </li>
+  </ul>
+  <div id="tab1">
+    Wikipediaのページへ移動します。<br>
+    https://ja.wikipedia.org/wiki/あにゃまる探偵_キルミンずぅ
+  </div>
+  <div id="tab2">
+    ニコニコ大百科のページへ移動します。<br>
+    http://dic.nicovideo.jp/a/あにゃまる探偵%20キルミンずぅ
+  </div>
+  <div id="tab3">
+    バンダイチャンネルのページへ移動します。<br>
+    第1話を無料で視聴できます。<br>
+    http://www.b-ch.com/ttl/index.php?ttl_c=2707
+  </div>
+</div>
+<hr>
+<a href="./">Home</a>
+
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script><!-- slim ではダメ -->
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+// jQueryUI の Tabsを適用する
+$('.tab-container').tabs({
+  event: 'mouseover'
+});
+
+// クリックした時の処理を独自に作る
+$('.tab-container .ui-tabs-anchor').click(function(ev) {
+  ev.preventDefault();
+
+  // data属性に書いていたURLを元にしてページ移動する
+  window.open($(this).data('url'), '_blank');
+});
+</script>
+</body>
+</html>

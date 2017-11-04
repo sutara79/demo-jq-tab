@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>jQuery: クリックでタブを切り替える</title>
+<style>
+/* タブ領域 */
+.tab-container {
+  max-width: 500px;
+}
+
+/* タブメニュー */
+.tab-header-wrapper {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+}
+.tab-header {
+  list-style-type: none;
+  margin-right: 8px;
+}
+.tab-header a {
+  background-color: darkgray;
+  border: 2px solid #555;
+  border-bottom: 0;
+  border-radius: 4px 4px 0 0;
+  color: white;
+  display: block;
+  padding: 8px;
+  text-decoration: none;
+}
+.tab-header-active a {
+  background-color: lightblue;
+  color: inherit;
+  position: relative; /* z-index とともに必要 */
+  z-index: 1;
+}
+
+/* タブ本文 */
+.tab-body-wrapper {
+  position: relative;
+  top: -2px; /* 枠線の太さの分だけ、上にずらす */
+}
+.tab-body {
+  background-color: #eee;
+  border: 2px solid #555;
+  border-radius: 0 4px 4px 4px;
+  display: none;
+  padding: 8px;
+}
+.tab-body-active {
+  display: block;
+}
+</style>
+</head>
+<body>
+<h1>jQuery: クリックでタブを切り替える</h1>
+<div class="tab-container">
+  <ul class="tab-header-wrapper">
+    <li class="tab-header tab-header-active">
+      <a href="javascript:void(0)">Wikipedia</a>
+    </li>
+    <li class="tab-header">
+      <a href="javascript:void(0)">ニコニコ大百科</a>
+    </li>
+    <li class="tab-header">
+      <a href="javascript:void(0)">バンダイチャンネル</a>
+    </li>
+  </ul>
+  <div class="tab-body-wrapper">
+    <div class="tab-body tab-body-active">
+      Wikipediaのページへ移動します。<br>
+      <a href="https://ja.wikipedia.org/wiki/%E3%81%82%E3%81%AB%E3%82%83%E3%81%BE%E3%82%8B%E6%8E%A2%E5%81%B5_%E3%82%AD%E3%83%AB%E3%83%9F%E3%83%B3%E3%81%9A%E3%81%85" target="_blank">https://ja.wikipedia.org/wiki/あにゃまる探偵_キルミンずぅ</a>
+    </div>
+    <div class="tab-body">
+      ニコニコ大百科のページへ移動します。<br>
+      <a href="http://dic.nicovideo.jp/a/%E3%81%82%E3%81%AB%E3%82%83%E3%81%BE%E3%82%8B%E6%8E%A2%E5%81%B5%20%E3%82%AD%E3%83%AB%E3%83%9F%E3%83%B3%E3%81%9A%E3%81%85" target="_blank">http://dic.nicovideo.jp/a/あにゃまる探偵%20キルミンずぅ</a>
+    </div>
+    <div class="tab-body">
+      バンダイチャンネルのページへ移動します。<br>
+      第1話を無料で視聴できます。<br>
+      <a href="http://www.b-ch.com/ttl/index.php?ttl_c=2707" target="_blank">http://www.b-ch.com/ttl/index.php?ttl_c=2707</a>
+    </div>
+  </div>
+</div>
+<hr>
+<a href="./">Home</a>
+
+<!-- JavaScript -->
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+// タブがクリックされた場合の動作
+$('.tab-header').click(function() {
+  // クリックされたタブを元に、表示短縮用の変数を作成
+  var container     = $(this).parents('.tab-container');
+  var currentHeader = $(container).find('.tab-header-active');
+  var nextIndex     = $(container).find('.tab-header').index(this);
+  var currentBody   = $(container).find('.tab-body-active');
+  var nextBody      = $(container).find('.tab-body').eq(nextIndex);
+
+  // クリックされたタブと表示中のタブが違っている場合のみ、下記を行う
+  if (!$(this).is(currentHeader)) {
+    $(currentBody).removeClass('tab-body-active');
+    $(currentHeader).removeClass('tab-header-active');
+
+    $(nextBody).addClass('tab-body-active');
+    $(this).addClass('tab-header-active');
+  }
+});
+</script>
+</body>
+</html>
